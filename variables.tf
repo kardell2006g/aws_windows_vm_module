@@ -46,7 +46,7 @@ variable "cost_center" {
 variable "key_name" {
   description = "Existing EC2 key pair name, used to decrypt the Windows Administrator password. Leave empty to launch without one."
   type        = string
-  default     = test
+  default     = "test"
 }
 
 # ---------------------------------------------------------------------------
