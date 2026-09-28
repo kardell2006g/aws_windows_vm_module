@@ -25,7 +25,7 @@ variable "server_type" {
 variable "instance_size" {
   description = "T-shirt size of the server: micro, small, medium or large."
   type        = string
-  default     = "medium"
+  default     = "small"
 
   validation {
     condition     = contains(["micro", "small", "medium", "large"], var.instance_size)
@@ -71,9 +71,9 @@ variable "instance_types" {
   type        = map(string)
   default = {
     micro  = "t3.micro"
-    small  = "t3.medium"
-    medium = "t3.large"
-    large  = "m6i.xlarge"
+    small  = "t3.small"
+    medium = "t3.medium"
+    large  = "t3.large"
   }
 }
 
