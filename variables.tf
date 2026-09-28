@@ -25,7 +25,7 @@ variable "server_type" {
 variable "instance_size" {
   description = "T-shirt size of the server: micro, small, medium or large."
   type        = string
-  default     = "small"
+  #default     = "small"
 
   validation {
     condition     = contains(["micro", "small", "medium", "large"], var.instance_size)
