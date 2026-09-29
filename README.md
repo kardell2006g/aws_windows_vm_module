@@ -56,8 +56,10 @@ them under management with `import` blocks.
    - Create a variable set, attached to the project where no-code workspaces
      land, with AWS credentials (preferably dynamic provider credentials) and
      platform defaults such as `region`, `vpc_name`, and `rdp_allowed_cidrs`.
-3. **Users** click *Provision workspace*, then fill in `name`, `server_type`,
+3. **Users** click *Provision workspace*, then fill in `server_type`,
    `instance_size`, `cost_center`, and optionally `key_name`.
+
+   Note: VM named after workspace name.
 
 Outputs: `public_ip` for RDP, and `web_url` (`http://<nlb-dns>:8080`) for Web servers.
 
