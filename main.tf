@@ -1,25 +1,22 @@
-locals {
-  is_web = var.server_type == "Web"
-
-  common_tags = {
-    "CostCenter"        = var.cost_center
-    "Terraform Managed" = "true"
-  }
-
-  # NLB and target group names are capped at 32 characters.
-  lb_name = substr("${var.name}-nlb", 0, 32)
-  tg_name = substr("${var.name}-tg8080", 0, 32)
-}
-
 # Generate a random 4-digit integer
 resource "random_integer" "suffix" {
   min = 1000
   max = 9999
 }
 
-# Combine workspace name and random digits
 locals {
   unique_name = "${terraform.workspace}-${random_integer.suffix.result}"
+
+  is_web = var.server_type == "Web"
+
+  common_tags = {
+    CostCenter        = var.cost_center,
+    "Terraform Managed" = "true"
+  }
+
+  # NLB and target group names are capped at 32 characters.
+  lb_name = substr("${local.unique_name}-nlb", 0, 32)
+  tg_name = substr("${local.unique_name}-tg8080", 0, 32)
 }
 
 
