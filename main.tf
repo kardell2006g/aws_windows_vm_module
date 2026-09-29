@@ -11,6 +11,18 @@ locals {
   tg_name = substr("${var.name}-tg8080", 0, 32)
 }
 
+# Generate a random 4-digit integer
+resource "random_integer" "suffix" {
+  min = 1000
+  max = 9999
+}
+
+# Combine workspace name and random digits
+locals {
+  unique_name = "${terraform.workspace}-${random_integer.suffix.result}"
+}
+
+
 # ---------------------------------------------------------------------------
 # Look up the existing shared network. This module never creates networks.
 # ---------------------------------------------------------------------------
@@ -44,12 +56,12 @@ data "aws_ssm_parameter" "windows_ami" {
 # ---------------------------------------------------------------------------
 
 resource "aws_security_group" "instance" {
-  name_prefix = "${var.name}-"
-  description = "${var.server_type} server ${var.name}"
+  name_prefix = "${local.unique_name}-"
+  description = "${var.server_type} server ${local.unique_name}"
   vpc_id      = data.aws_vpc.shared.id
 
   tags = {
-    Name = "${var.name}-sg"
+    Name = "${local.unique_name}-sg"
   }
 
   lifecycle {
@@ -111,11 +123,11 @@ resource "aws_instance" "this" {
     encrypted   = true
 
     # default_tags does not reach volumes created through the instance.
-    tags = merge(local.common_tags, { Name = "${var.name}-root" })
+    tags = merge(local.common_tags, { Name = "${local.unique_name}-root" })
   }
 
   tags = {
-    Name       = var.name
+    Name       = local.unique_name
     ServerType = var.server_type
   }
 
@@ -138,12 +150,12 @@ resource "aws_instance" "this" {
 resource "aws_security_group" "nlb" {
   count = local.is_web ? 1 : 0
 
-  name_prefix = "${var.name}-nlb-"
-  description = "NLB for ${var.name}"
+  name_prefix = "${local.unique_name}-nlb-"
+  description = "NLB for ${local.unique_name}"
   vpc_id      = data.aws_vpc.shared.id
 
   tags = {
-    Name = "${var.name}-nlb-sg"
+    Name = "${local.unique_name}-nlb-sg"
   }
 
   lifecycle {
