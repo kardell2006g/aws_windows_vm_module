@@ -2,16 +2,6 @@
 # Self-service inputs (shown to users in the no-code provisioning form)
 # ---------------------------------------------------------------------------
 
-variable "name" {
-  description = "Name of the server. Used for the instance Name tag and related resources."
-  type        = string
-
-  validation {
-    condition     = can(regex("^[a-zA-Z][a-zA-Z0-9-]{1,23}$", var.name))
-    error_message = "name must be 2-24 characters: letters, digits and hyphens, starting with a letter."
-  }
-}
-
 variable "server_type" {
   description = "Server role. Decides which network the VM joins. Web servers also get an NLB on port 8080."
   type        = string
