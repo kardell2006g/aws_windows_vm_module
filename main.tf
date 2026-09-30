@@ -5,7 +5,9 @@ resource "random_integer" "suffix" {
 }
 
 locals {
-  unique_name = regex_replace("${terraform.workspace}-${random_integer.suffix.result}", "[^a-zA-Z0-9-]", "")
+  ws_name = replace("${terraform.workspace}","[^a-zA-Z0-9-]", "")
+unique_name = "${local.ws_name}-${random_integer.suffix.result}" 
+
 
   is_web = var.server_type == "Web"
 
